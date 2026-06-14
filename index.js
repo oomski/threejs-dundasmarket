@@ -9,13 +9,15 @@ const h = window.innerHeight;
 const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 1000);
-camera.position.z = 5;
+camera.position.z = 4;
+camera.position.y = 1;
+
 // make canvas transparent
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setSize(w, h);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.2;
+renderer.toneMappingExposure = 1;
 // ensure clear color is fully transparent
 renderer.setClearColor(0x000000, 0);
 document.body.appendChild(renderer.domElement);
@@ -68,13 +70,13 @@ dundasMarket.position.sub(center); // move model so its center is at (0,0,0) rel
 pivot.add(dundasMarket);
 
 // start rotated 270 degrees around Y
-pivot.rotation.y = 3 * Math.PI / 2; // 270deg
+pivot.rotation.y = 2.7 * Math.PI / 2; // 270deg
 
 // bounce setup: 180° total (min = 270° - 180° = 90°, max = 270°)
 const clock = new THREE.Clock();
 const rotationSpeed = 0.3; // radians per second (~0.005 per frame at 60fps)
 const startAngle = pivot.rotation.y; // 270deg
-const fullRange = Math.PI; // 180° in radians
+const fullRange = 0.7 * Math.PI; // 180° in radians
 const minAngle = startAngle - fullRange; // 90deg
 const maxAngle = startAngle; // 270deg
 let rotationDirection = -1; // start moving away from 270° in the same direction as before
@@ -109,22 +111,12 @@ const material = new THREE.MeshStandardMaterial({
 const cube = new THREE.Mesh(geometry, material);
 // scene.add(cube);
 
-const hemiLight = new THREE.HemisphereLight(0xffffff, 0x666666, 0.5);
+const hemiLight = new THREE.HemisphereLight(0xffffff, 0x666666, 1);
 scene.add(hemiLight);
 // add ambient fill light (no directional light)
-const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+const ambient = new THREE.AmbientLight(0xffffff, 1);
 scene.add(ambient);
 
-// Sprites BG
-// const gradientBackground = getLayer({
-//   hue: 0.5,
-//   numSprites: 8,
-//   opacity: 0.2,
-//   radius: 10,
-//   size: 24,
-//   z: -15.5,
-// });
-// scene.add(gradientBackground);
 
 function animate() {
   requestAnimationFrame(animate);
